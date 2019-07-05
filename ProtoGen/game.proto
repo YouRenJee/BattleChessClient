@@ -1,0 +1,139 @@
+syntax = "proto2"; 
+
+enum Stype
+{
+    INVALID_STYPE=0;
+    game_server = 1;
+}
+
+enum Cmd {
+    INVALID_VAULE = 0;
+    eUserLost = 1;
+	eLoginReq = 2;
+	eLoginRes = 3;
+	eGetRoomList = 4;
+	eRoomList = 5;
+	eCreateRoom = 6;
+	eCreateRoomRes = 7;
+	eOtherPlayerEnter = 8;
+	eOtherPlayerExit = 9;
+	eEnterRoom = 10;
+	eEnterRoomRes = 11;
+	eExitRoom = 12;
+	eReady = 13;
+	eGameStart = 14;
+	eOtherPlayerReady = 15;
+	eCouldMov = 16; //告诉玩家可以开始移动了
+	eMovResReq = 17; //告诉服务器移动的路径
+	eMovResReturn = 18; //服务器广播移动的指令和的结果
+	ePlayerFailed =19; //玩家被消灭
+	eGameOver = 20; //游戏结束 广播结算信息
+}
+
+message UserLost{
+	
+}
+
+message LoginReq {
+    required string u_name = 1;
+}
+
+message LoginRes{
+    required int32 status = 1;
+}
+
+message GetRoomList{
+	
+}
+
+message RoomItem{
+	required int32 id = 1;
+	required int32 status = 2;
+	required int32 num = 3;
+	required string name = 4;
+}
+
+message RoomList{
+	repeated RoomItem room_list = 1;
+}
+
+message CreateRoom{
+	required string name = 1;
+}
+
+message CreateRoomRes{
+	required int32 seat_id = 1;
+	required int32 room_id = 2;
+}
+
+message OtherPlayerEnter{
+	required string name = 1;
+	required int32 seat_id = 2;
+}
+
+message OtherPlayerExit{
+	required int32 seat_id = 1;
+}
+
+message EnterRoom{
+	required int32 room_id = 1;
+}
+
+message EnterRoomRes{
+	required int32 seat_id = 1;
+	required int32 room_id = 2;
+}
+
+message ExitRoom{
+	required int32 seat_id = 1;
+}
+
+message ChessInfo{
+	required string pos = 1;
+	required int32 chess = 2;
+}
+
+message Ready{
+	repeated ChessInfo chess_info = 1;
+}
+
+message GameStart{
+
+}
+
+message OtherPlayerReady{
+	required int32 seat_id = 1;
+}
+
+message CouldMov{  
+	
+}
+
+message Path{
+	required string pt = 1;
+}
+
+message MovResReq{    
+	required string start = 1; //起点  即棋子所在的位置
+	required string targetpos = 2;//终点
+	repeated Path path = 3;  // 移动的路径
+	 
+}
+
+message MovResReturn{   
+	required string start = 1; //起点  即棋子所在的位置
+	required string targetpos = 2; //终点
+	required int32 res = 3; //结果1为成功移动无碰撞 2为吃子 3为被吃 4为对子
+	repeated Path path = 4;// 移动的路径
+}
+
+message PlayerFailed{   
+	required int32 seat_id = 1;
+}
+
+message GameOver{  
+	required int32 winner1 = 1;
+	required int32 winner2 = 2;
+	required int32 loser1 = 3;
+	required int32 loser2 = 4;
+}
